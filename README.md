@@ -26,7 +26,9 @@ This project will also include:
 
 ### Wireframes
 
-This app will consist of a single screen with game viewport, game controls, and nav links to the Github, my LinkedIn, and the About modal.  Game controls will include Start, Stop, Reset buttons, and Mute control.
+This app will consist of a single screen with game viewport, game controls, and links to Github, Linkedin, and my portfolio site.  
+
+Game controls will include Start, Stop, Reset, and Mute control.
 
 ![wireframes](images/mockup.png)
 
@@ -51,7 +53,7 @@ In addition to the webpack entry file, there will be three scripts involved in t
 
 **Day 1**: Setup all necessary Node modules, including getting webpack up and running and `Howler.js` installed.
 
-Create `webpack.config.js` as well as `package.json`.  Write a basic entry file and the bare bones of all 3 scripts outlined above.  Learn the basics of `Howler.js`.  Goals for the day:
+Create `webpack.config.js` as well as `package.json`.  Write a basic entry file and the bare bones of all 3 scripts outlined above.  Learn the basics of `Howler.js`.  
 
 - Get a green bundle with `webpack`
 - Learn enough Canvas to animate a sprite
