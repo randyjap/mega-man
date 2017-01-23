@@ -32,6 +32,12 @@ Game controls will include Start, Stop, Reset, and Mute control.
 
 ![wireframes](images/mockup.png)
 
+### Sprite Examples
+
+![wireframes](images/mega-man.png)
+
+![wireframes](images/enemies.png)
+
 ### Architecture and Technologies
 
 This project will be implemented with the following technologies:
