@@ -2,9 +2,9 @@
 
 ### Background
 
-**Mega Man** was released in 1987 on the NES (Nintendo Entertainment System).  The original video game remains an enduring and timeless classic, marking the start of a franchise that would to date sell over 30 million copies worldwide.  The Mega Man franchise has become one of the most well known video game franchise of all time and continues to owe much of its future game mechanics to the original.
+**Mega Man** was released in 1987 on the NES (Nintendo Entertainment System).  The original video game remains an enduring and timeless classic, marking the start of a franchise that would to date sell over 30 million copies worldwide.  The Mega Man franchise has become one of the most well known video game franchises of all time and continues to owe much of its current game mechanics to the original.
 
-This project intends to showcase a basic sets of features that define this classic jump & run genre game in plain javascript:
+This project intends to showcase a basic set of features that defines this classic jump & run genre game using plain javascript:
 - side to side scrolling (with the help of Canvas)
 - character animation (sprites)
 - music and interactive sound (with the help of Howler)
@@ -79,7 +79,7 @@ Create `webpack.config.js` as well as `package.json`.  Write a basic entry file 
 - Add control to mute both sound and music
 - Add enemy that jumps and shoots randomly in place at the protagonist
 
-**Day 4**: Install the controls for the user to interact with the game.  Style the front-end, making it polished and professional.  Goals for the day:
+**Day 4**: Install the controls for the user to interact with the game.  Style the front-end, making it polished and professional.
 
 - Create controls for the game to stop, start, reset, and toggle mute
 - Have a styled page with contact links
