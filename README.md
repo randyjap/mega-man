@@ -92,3 +92,5 @@ Some possible updates are:
 - Add more game elements (enemy types)
 - Point System
 - Persisting scores (arcade scoreboard)
+
+Sprites were taken from Zetaman.  Original image in [images folder](images/Megaman_Sheet.png)
