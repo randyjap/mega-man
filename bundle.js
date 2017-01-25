@@ -55,9 +55,8 @@
 	var _sound = __webpack_require__(7);
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	
 	  window.pause = false;
-	  var runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites);
+	  var runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites, _sound.music);
 	  runGame();
 	  var restartButton = document.getElementById("restart");
 	  restartButton.addEventListener("click", function (e) {
@@ -67,10 +66,10 @@
 	    if (canvas) {
 	      cancelAnimationFrame(window.animation);
 	      document.body.removeChild(canvas);
-	      runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites);
+	      runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites, _sound.music);
 	      runGame();
 	    } else {
-	      runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites);
+	      runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites, _sound.music);
 	      runGame();
 	    }
 	  });
@@ -120,12 +119,13 @@
 	
 	var arrowCodes = { 65: "left", 87: "up", 68: "right", 32: "shoot" };
 	
-	function Game(plan, soundSprites) {
+	function Game(plan, soundSprites, music) {
 	  this.grid = [];
 	  this.sprites = [];
 	  this.width = plan[0].length;
 	  this.height = plan.length;
 	  this.sound = soundSprites;
+	  this.music = music;
 	
 	  for (var y = 0; y < this.height; y++) {
 	    var row = plan[y],
@@ -180,8 +180,7 @@
 	    if (other !== player && player.pos.x + player.size.x > other.pos.x && player.pos.x < other.pos.x + other.size.x && player.pos.y + player.size.y > other.pos.y && player.pos.y < other.pos.y + other.size.y) return other;
 	  }
 	};
-	
-	var maxStep = 0.05;
+	var maxStep = 0.04;
 	
 	Game.prototype.animate = function (step, keys) {
 	  var _this = this;
@@ -215,6 +214,10 @@
 	    this.sound.play("enemyDamage");
 	    if (sprite.hitPoints <= 0) {
 	      this.gameStatus = "won";
+	      this.music[0].stop();
+	      this.music[1].stop();
+	      this.music[2].stop();
+	      this.music[3].play();
 	    }
 	  } else if (type === "friendly-bullet" && sprite && sprite.type === "henchman" && this.gameStatus === null) {
 	    if (sprite.hitPoints > 0) sprite.hitPoints--;
@@ -275,8 +278,8 @@
 	  return runGame;
 	}
 	
-	function play(plans, Canvas, soundSprites) {
-	  return start(new Game(plans[0], soundSprites), Canvas);
+	function play(plans, Canvas, soundSprites, music) {
+	  return start(new Game(plans[0], soundSprites, music), Canvas);
 	}
 
 /***/ },
@@ -531,7 +534,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                           B    ", "                                                     H     #####################", "                                                   #####                        ", "                                       H    ####                                ", "                                 H   ####                                       ", "                         H    #####          ####      ####     ####   ####     ", "                   H   ####           ####                                      ", "     M           ####                             ####                          ", "WW############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "                                                                                "]];
+	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                           B    ", "                                                     H     #####################", "                                                   #####                        ", "                                       H    ####                                ", "                                 H   ####                                       ", "                         H    #####          ####      ####     ####   ####     ", "                   H   ####           ####                                      ", "     M           ####                             ####                          ", "WW############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "                                                                                "]];
 
 /***/ },
 /* 5 */
@@ -3572,7 +3575,14 @@
 	  volume: 1
 	});
 	
-	var music = exports.music = [musicChibi, musicDigital, musicResistors];
+	var victory = new _howler.Howl({
+	  src: 'sounds/music/boss_defeated.mp3',
+	  autoplay: false,
+	  loop: false,
+	  volume: 1
+	});
+	
+	var music = exports.music = [musicChibi, musicDigital, musicResistors, victory];
 	
 	var soundSprites = exports.soundSprites = new _howler.Howl({
 	  src: ['sounds/fx/sound_sprites.mp3'],

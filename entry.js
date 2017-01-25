@@ -4,10 +4,8 @@ import { Canvas } from './lib/canvas.js';
 import { music, soundSprites } from './lib/sound.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-
-
   window.pause = false;
-  let runGame = play(levels, Canvas, soundSprites);
+  let runGame = play(levels, Canvas, soundSprites, music);
   runGame();
   let restartButton = document.getElementById("restart");
   restartButton.addEventListener("click", e => {
@@ -17,10 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (canvas) {
       cancelAnimationFrame(window.animation);
       document.body.removeChild(canvas);
-      runGame = play(levels, Canvas, soundSprites);
+      runGame = play(levels, Canvas, soundSprites, music);
       runGame();
     } else {
-      runGame = play(levels, Canvas, soundSprites);
+      runGame = play(levels, Canvas, soundSprites, music);
       runGame();
     }
   });
