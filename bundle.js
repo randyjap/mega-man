@@ -54,6 +54,24 @@
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  (0, _game.play)(_levels.levels, _canvas.Canvas);
+	  var restartButton = document.getElementById("restart");
+	  restartButton.addEventListener("click", function (e) {
+	    e.preventDefault();
+	
+	    var canvas = document.getElementById("canvas");
+	    if (canvas) {
+	      cancelAnimationFrame(window.animation);
+	      document.body.removeChild(canvas);
+	      (0, _game.play)(_levels.levels, _canvas.Canvas);
+	    } else {
+	      (0, _game.play)(_levels.levels, _canvas.Canvas);
+	    }
+	  });
+	
+	  var proxy = document.getElementById("pause");
+	  proxy.addEventListener("click", function (e) {
+	    e.preventDefault();
+	  });
 	});
 
 /***/ },
@@ -100,12 +118,8 @@
 	    return player.type === "boss";
 	  })[0];
 	
-	  this.status = this.finishDelay = null;
+	  this.gameStatus = null;
 	}
-	
-	Game.prototype.isFinished = function () {
-	  return this.status !== null && this.finishDelay < 0;
-	};
 	
 	var characters = {
 	  "M": _sprites.Megaman,
@@ -140,8 +154,6 @@
 	Game.prototype.animate = function (step, keys) {
 	  var _this = this;
 	
-	  if (this.status !== null) this.finishDelay -= step;
-	
 	  var _loop = function _loop() {
 	    var thisStep = Math.min(step, maxStep);
 	    _this.sprites.forEach(function (player) {
@@ -156,26 +168,23 @@
 	};
 	
 	Game.prototype.spriteOverlapAction = function (type, player, sprite) {
-	  if (type === "water" && this.status === null) {
+	  if (type === "water" && this.gameStatus === null) {
 	    if (this.megaman.hitPoints > 0) this.megaman.hitPoints -= 0.3;
 	    if (this.megaman.hitPoints <= 0) {
-	      this.status = "lost";
-	      this.finishDelay = 4;
+	      this.gameStatus = "lost";
 	    }
 	    this.megaman.hit = true;
-	  } else if (type === "friendly-bullet" && sprite && sprite.type === "boss" && this.status === null) {
+	  } else if (type === "friendly-bullet" && sprite && sprite.type === "boss" && this.gameStatus === null) {
 	    sprite.hitPoints--;
 	    sprite.hit = true;
 	    if (sprite.hitPoints <= 0) {
-	      this.status = "won";
-	      this.finishDelay = 4;
+	      this.gameStatus = "won";
 	    }
-	  } else if (type === "unfriendly-bullet" && sprite && sprite.type === "megaman" && this.status === null) {
+	  } else if (type === "unfriendly-bullet" && sprite && sprite.type === "megaman" && this.gameStatus === null) {
 	    sprite.hitPoints--;
 	    sprite.hit = true;
 	    if (sprite.hitPoints <= 0) {
-	      this.status = "lost";
-	      this.finishDelay = 4;
+	      this.gameStatus = "lost";
 	    }
 	  }
 	};
@@ -203,31 +212,26 @@
 	      stop = frameFunc(timeStep) === false;
 	    }
 	    lastTime = time;
-	    if (!stop) requestAnimationFrame(frame);
+	    if (!stop) window.animation = requestAnimationFrame(frame);
 	  }
 	  requestAnimationFrame(frame);
 	}
 	
 	var arrows = trackKeys(arrowCodes);
 	
-	function start(level, Display, gameContinues) {
-	  var display = new Display(document.body, level);
+	function start(level, Canvas, gameContinues) {
+	  var display = new Canvas(document.body, level);
 	  window.display = display;
 	  runAnimation(function (step) {
 	    level.animate(step, arrows);
 	    display.drawFrame(step);
-	    if (level.isFinished()) {
-	      display.clear();
-	      if (gameContinues) gameContinues(level.status);
-	      return false;
-	    }
 	  });
 	}
 	
-	function play(plans, Display) {
+	function play(plans, Canvas) {
 	  function startLevel(n) {
-	    start(new Game(plans[n]), Display, function (status) {
-	      if (status === "lost") console.log("GAME OVER!");else if (status === "won") console.log("THE END!");
+	    start(new Game(plans[n]), Canvas, function (gameStatus) {
+	      if (gameStatus === "lost") console.log(gameStatus);else if (gameStatus === "won") console.log(gameStatus);
 	    });
 	  }
 	  startLevel(0);
@@ -266,6 +270,7 @@
 	
 	function Canvas(parent, level) {
 	  this.canvas = document.createElement("canvas");
+	  this.canvas.id = "canvas";
 	  this.canvas.width = Math.min(window.innerWidth, level.width * spriteSize);
 	  this.canvas.height = Math.min(window.innerWidth / 3, level.height * spriteSize);
 	  parent.appendChild(this.canvas);
@@ -282,6 +287,7 @@
 	    height: this.canvas.height / spriteSize
 	  };
 	
+	  this.start = new Date();
 	  this.drawFrame(0);
 	}
 	
@@ -304,15 +310,24 @@
 	  var megaman = this.level.megaman;
 	  var center = megaman.pos.plus(megaman.size.times(0.5));
 	
-	  if (center.x < view.left + margin * 2) view.left = Math.max(center.x - margin * 2, 0);else if (center.x > view.left + view.width - margin * 2) view.left = Math.min(center.x + margin * 2 - view.width, this.level.width - view.width);
-	  if (center.y < view.top + margin) view.top = Math.max(center.y - margin, 0);else if (center.y > view.top + view.height - margin) view.top = Math.min(center.y + margin - view.height, this.level.height - view.height);
+	  if (center.x < view.left + margin * 2) {
+	    view.left = Math.max(center.x - margin * 2, 0);
+	  } else if (center.x > view.left + view.width - margin * 2) {
+	    view.left = Math.min(center.x + margin * 2 - view.width, this.level.width - view.width);
+	  }
+	
+	  if (center.y < view.top + margin) {
+	    view.top = Math.max(center.y - margin, 0);
+	  } else if (center.y > view.top + view.height - margin) {
+	    view.top = Math.min(center.y + margin - view.height, this.level.height - view.height);
+	  }
 	};
 	
 	Canvas.prototype.clearDisplay = function () {
-	  if (this.level.status === "won") {
+	  if (this.level.gameStatus === "won") {
 	    //TODO
 	    console.log("YOU WON!");
-	  } else if (this.level.status === "lost") {
+	  } else if (this.level.gameStatus === "lost") {
 	    //TODO
 	    console.log("YOU LOST!");
 	  } else {
@@ -342,6 +357,21 @@
 	
 	      this.cx.drawImage(spriteRoll, spriteFrameNumber * spriteSize, 0, spriteSize, spriteSize, xPosition, yPosition, spriteSize, spriteSize);
 	    }
+	  }
+	
+	  var farewellMessage = document.createElement("img");
+	  farewellMessage.src = "images/win-loss.png";
+	  var messageNumber = void 0;
+	
+	  if (this.level.gameStatus === "lost") {
+	    messageNumber = 1;
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	  } else if (this.level.gameStatus === "won") {
+	    messageNumber = 0;
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	  } else if (new Date() - this.start < 7000) {
+	    messageNumber = 2;
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
 	  }
 	};
 	
@@ -506,7 +536,7 @@
 	    this.hit = false;
 	  }
 	
-	  if (game.status === "won") {
+	  if (game.gameStatus === "won") {
 	    this.destroyed = true;
 	  }
 	};
@@ -583,7 +613,7 @@
 	Megaman.prototype.act = function (step, game, keys) {
 	  this.moveX(step, game, keys);
 	  this.moveY(step, game, keys);
-	  if (keys.shoot) {
+	  if (keys.shoot && this.hitPoints > 0) {
 	    // this will slow down the firing rate to 3 a second
 	    var cFire = new Date();
 	    if ((cFire - this.lastFire) / 1000 > megamanFiringRate) {
@@ -598,7 +628,7 @@
 	  }
 	
 	  // Losing animation
-	  if (game.status === "lost") {
+	  if (game.gameStatus === "lost") {
 	    this.hit = true;
 	  }
 	};
