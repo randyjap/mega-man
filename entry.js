@@ -3,7 +3,9 @@ import { levels } from './lib/levels.js';
 import { Canvas } from './lib/canvas.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  play(levels, Canvas);
+  window.pause = false;
+  let runGame = play(levels, Canvas);
+  runGame();
   let restartButton = document.getElementById("restart");
   restartButton.addEventListener("click", e => {
     e.preventDefault();
@@ -12,14 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (canvas) {
       cancelAnimationFrame(window.animation);
       document.body.removeChild(canvas);
-      play(levels, Canvas);
+      runGame = play(levels, Canvas);
+      runGame();
     } else {
-      play(levels, Canvas);
+      runGame = play(levels, Canvas);
+      runGame();
     }
   });
 
   let proxy = document.getElementById("pause");
   proxy.addEventListener("click", e => {
     e.preventDefault();
+    window.pause = !window.pause;
+    if (!window.pause) runGame();
   });
 });
