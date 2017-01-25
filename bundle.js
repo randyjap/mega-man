@@ -124,7 +124,8 @@
 	
 	var characters = {
 	  "M": _sprites.Megaman,
-	  "B": _sprites.Boss
+	  "B": _sprites.Boss,
+	  "H": _sprites.Henchman
 	};
 	
 	Game.prototype.findCollision = function (pos, size) {
@@ -183,6 +184,11 @@
 	    if (sprite.hitPoints <= 0) {
 	      this.gameStatus = "won";
 	    }
+	  } else if (type === "friendly-bullet" && sprite && sprite.type === "henchman" && this.gameStatus === null) {
+	    if (sprite.hitPoints > 0) sprite.hitPoints--;
+	    this.score += Math.round(100000 * Math.random());
+	    document.getElementById("score").innerHTML = 'Score: ' + this.score;
+	    sprite.hit = true;
 	  } else if (type === "unfriendly-bullet" && sprite && sprite.type === "megaman" && this.gameStatus === null) {
 	    sprite.hitPoints--;
 	    sprite.hit = true;
@@ -249,7 +255,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                         B                                      ", "     M           ###                   #####                ########            ", "WW############WWWWWWWWW####WWW########################WWWWWWWWWW#############WWW", "                                                                                "]];
+	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                           B    ", "                                                     H     #####################", "                                                   #####                        ", "                                       H    ####                                ", "                                 H   ####                                       ", "                         H    #####          ####      ####     ####   ####     ", "                   H   ####           ####                                      ", "     M           ####                             ####                          ", "WW############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "                                                                                "]];
 
 /***/ },
 /* 3 */
@@ -419,9 +425,11 @@
 	  if (!boss.destroyed && boss.hitPoints < 100) boss.hitPoints += 0.02;
 	  document.getElementById("boss-health").innerHTML = "Boss Health: " + Math.round(boss.hitPoints);
 	
-	  var rectangle = new Path2D();
-	  rectangle.rect(x, y - 20, 50 * boss.hitPoints / 50, 20);
-	  this.cx.stroke(rectangle);
+	  if (!boss.destroyed) {
+	    var rectangle = new Path2D();
+	    rectangle.rect(x, y - 20, 50 * boss.hitPoints / 50, 20);
+	    this.cx.stroke(rectangle);
+	  }
 	
 	  this.cx.save(); //keep drawing context intact
 	  if (this.game.megaman.pos.x > this.game.boss.pos.x) flipHorizontally(this.cx, x + width / 2);
@@ -429,6 +437,27 @@
 	  this.cx.drawImage(spriteRoll, spriteFrameNumber * width, 0, width, height, x, y, width, height);
 	
 	  this.cx.restore(); //restore drawing context
+	};
+	
+	Canvas.prototype.drawHenchman = function (x, y, width, height, henchman) {
+	  if (!henchman.destroyed) {
+	    var spriteFrameNumber = 20;
+	    if (henchman.hitPoints <= 0) henchman.destroyed = true;
+	    if (henchman.hit) {
+	      spriteFrameNumber = [17, 20][Math.floor(Math.random() * [17, 20].length)];
+	    }
+	
+	    var rectangle = new Path2D();
+	    rectangle.rect(x, y - 20, 45 * henchman.hitPoints / 20, 20);
+	    this.cx.stroke(rectangle);
+	
+	    this.cx.save(); //keep drawing context intact
+	    if (this.game.megaman.pos.x > henchman.pos.x) flipHorizontally(this.cx, x + width / 2);
+	
+	    this.cx.drawImage(spriteRoll, spriteFrameNumber * width, 0, width, height, x, y, width, height);
+	
+	    this.cx.restore(); //restore drawing context
+	  }
 	};
 	
 	Canvas.prototype.drawBullet = function (x, y, width, height) {
@@ -446,6 +475,8 @@
 	      this.drawMegaMan(x, y, width, height);
 	    } else if (sprite.type === "boss") {
 	      this.drawBoss(x, y, width, height);
+	    } else if (sprite.type === "henchman") {
+	      this.drawHenchman(x, y, width, height, sprite);
 	    } else if (sprite.type === "friendly-bullet") {
 	      this.drawBullet(x, y, width, height);
 	    } else if (sprite.type === "unfriendly-bullet") {
@@ -483,6 +514,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.Henchman = Henchman;
 	exports.Boss = Boss;
 	exports.Bullet = Bullet;
 	exports.Megaman = Megaman;
@@ -494,6 +526,58 @@
 	var megamanXSpeed = 6;
 	var bossFiringRate = 4 / 3;
 	var megamanFiringRate = 1 / 3;
+	
+	function Henchman(pos) {
+	  this.pos = pos.plus(new _vector_util.VectorUtil(0, 0));
+	  this.size = new _vector_util.VectorUtil(1, 1);
+	  this.speed = new _vector_util.VectorUtil(0, 0);
+	  this.hitPoints = 20;
+	  this.lastFire = new Date();
+	  this.hit = false;
+	  this.destroyed = false;
+	}
+	
+	Henchman.prototype.type = "henchman";
+	
+	Henchman.prototype.moveY = function (step, game) {
+	  this.speed.y += step * gravity;
+	  var motion = new _vector_util.VectorUtil(0, this.speed.y * step);
+	  var newPos = this.pos.plus(motion);
+	  var collidedObject = game.findCollision(newPos, this.size);
+	  if (collidedObject) {
+	    game.spriteOverlapAction(collidedObject);
+	    if (this.hitPoints > 0 && this.speed.y > 0) {
+	      this.speed.y = 0;
+	      this.speed.y = -(Math.random() * (20 - 5) + 5);
+	    } else {
+	      this.speed.y = 0;
+	    }
+	  } else {
+	    this.pos = newPos;
+	  }
+	};
+	
+	Henchman.prototype.act = function (step, game) {
+	  this.moveY(step, game);
+	
+	  // this will slow down the firing rate to 3 a second
+	  if (!this.destroyed) {
+	    var cFire = new Date();
+	    if ((cFire - this.lastFire) / 1000 > bossFiringRate) {
+	      var fireRight = true;
+	      if (this.pos.x > game.megaman.pos.x) fireRight = false;
+	      game.sprites.push(new Bullet(new _vector_util.VectorUtil(this.pos.x, this.pos.y), "unfriendly-bullet", fireRight));
+	      this.lastFire = cFire;
+	    }
+	  }
+	
+	  var otherSprite = game.findOverlappingObject(this);
+	  if (otherSprite) {
+	    game.spriteOverlapAction(otherSprite.type, otherSprite, this);
+	  } else {
+	    this.hit = false;
+	  }
+	};
 	
 	function Boss(pos) {
 	  this.pos = pos.plus(new _vector_util.VectorUtil(0, 0));
