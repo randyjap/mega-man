@@ -52,7 +52,7 @@
 	
 	var _canvas = __webpack_require__(5);
 	
-	var _sound = __webpack_require__(7);
+	var _sound = __webpack_require__(6);
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  window.pause = false;
@@ -61,7 +61,7 @@
 	  var restartButton = document.getElementById("restart");
 	  restartButton.addEventListener("click", function (e) {
 	    e.preventDefault();
-	
+	    document.getElementById("score").innerHTML = 'Score: 0';
 	    var canvas = document.getElementById("canvas");
 	    if (canvas) {
 	      cancelAnimationFrame(window.animation);
@@ -612,15 +612,7 @@
 	};
 	
 	Canvas.prototype.clearDisplay = function () {
-	  if (this.game.gameStatus === "won") {
-	    //TODO
-	    console.log("YOU WON!");
-	  } else if (this.game.gameStatus === "lost") {
-	    //TODO
-	    console.log("YOU LOST!");
-	  } else {
-	    this.cx.fillStyle = "lightblue";
-	  }
+	  this.cx.fillStyle = "lightblue";
 	  // Don't forget to make things transparent!
 	  this.cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	};
@@ -766,6 +758,60 @@
 
 /***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.soundSprites = exports.music = undefined;
+	
+	var _howler = __webpack_require__(7);
+	
+	var musicChibi = new _howler.Howl({
+	  src: 'sounds/music/chibi.mp3',
+	  autoplay: false,
+	  loop: true,
+	  volume: 1
+	});
+	
+	var musicDigital = new _howler.Howl({
+	  src: 'sounds/music/digital.mp3',
+	  autoplay: false,
+	  loop: true,
+	  volume: 1
+	});
+	
+	var musicResistors = new _howler.Howl({
+	  src: 'sounds/music/resistors.mp3',
+	  autoplay: false,
+	  loop: true,
+	  volume: 1
+	});
+	
+	var victory = new _howler.Howl({
+	  src: 'sounds/music/boss_defeated.mp3',
+	  autoplay: false,
+	  loop: false,
+	  volume: 1
+	});
+	
+	var music = exports.music = [musicChibi, musicDigital, musicResistors, victory];
+	
+	var soundSprites = exports.soundSprites = new _howler.Howl({
+	  src: ['sounds/fx/sound_sprites.mp3'],
+	  sprite: {
+	    explosion: [0, 500],
+	    enemyDamage: [0, 500],
+	    megamanHurt: [0, 500],
+	    jump: [1300, 100],
+	    shoot: [1400, 250]
+	  }
+	});
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -3540,60 +3586,6 @@
 	})();
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.soundSprites = exports.music = undefined;
-	
-	var _howler = __webpack_require__(6);
-	
-	var musicChibi = new _howler.Howl({
-	  src: 'sounds/music/chibi.mp3',
-	  autoplay: false,
-	  loop: true,
-	  volume: 1
-	});
-	
-	var musicDigital = new _howler.Howl({
-	  src: 'sounds/music/digital.mp3',
-	  autoplay: false,
-	  loop: true,
-	  volume: 1
-	});
-	
-	var musicResistors = new _howler.Howl({
-	  src: 'sounds/music/resistors.mp3',
-	  autoplay: false,
-	  loop: true,
-	  volume: 1
-	});
-	
-	var victory = new _howler.Howl({
-	  src: 'sounds/music/boss_defeated.mp3',
-	  autoplay: false,
-	  loop: false,
-	  volume: 1
-	});
-	
-	var music = exports.music = [musicChibi, musicDigital, musicResistors, victory];
-	
-	var soundSprites = exports.soundSprites = new _howler.Howl({
-	  src: ['sounds/fx/sound_sprites.mp3'],
-	  sprite: {
-	    explosion: [0, 500],
-	    enemyDamage: [0, 500],
-	    megamanHurt: [0, 500],
-	    jump: [1300, 100],
-	    shoot: [1400, 250]
-	  }
-	});
 
 /***/ }
 /******/ ]);

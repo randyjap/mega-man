@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let restartButton = document.getElementById("restart");
   restartButton.addEventListener("click", e => {
     e.preventDefault();
-
+    document.getElementById("score").innerHTML = `Score: 0`;
     let canvas = document.getElementById("canvas");
     if (canvas) {
       cancelAnimationFrame(window.animation);

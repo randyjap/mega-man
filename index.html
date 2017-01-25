@@ -4,14 +4,26 @@
     <meta charset="utf-8">
     <title>Mega Man - ロックマン</title>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script type="text/javascript" src="bundle.js"></script>
     <style>
+      html {
+        font-family: 'Press Start 2P', cursive;
+      }
       div.fixed {
         position: absolute;
         bottom: 10px;
+        transform: translate(-50%, 0);
+        left: 50%;
+        display: flex;
+        flex-flow: row;
+        width: 80%;
       }
       button {
+        width: 250px;
+        height: 22px;
         position: relative;
+        font-family: 'Press Start 2P', cursive;
       }
       #status-bar-left {
         position: absolute;
@@ -26,6 +38,23 @@
       .indicators {
         font-family: 'Press Start 2P', cursive;
       }
+      .controls {
+        position: relative;
+        height: 150px;
+      }
+      .buttons {
+        position: relative;
+        top: -16px;
+        padding: 20px;
+      }
+      .social-media {
+        position: relative;
+        top: -15px;
+        padding: 20px;
+      }
+      a {
+        color: black;
+      }
     </style>
   </head>
   <body>
@@ -36,11 +65,25 @@
     <div id="status-bar-right">
       <div id="score" class="indicators">Score: 0</div>
     </div>
+
     <div class="fixed">
-      <button id="restart">Restart</button>
-      <button id="pause">Pause</button>
-      <button id="mute">Mute / Unmute</button>
-      <button id="nextSong">Next Song</button>
+      <div><img class="controls" src="images/controls.png"/></div>
+      <div class="buttons">
+        <button id="restart"><i class="fa fa-repeat" aria-hidden="true"></i> Restart Game <i class="fa fa-gamepad" aria-hidden="true"></i></button>
+        <br/><br/>
+        <button id="pause"><i class="fa fa-pause" aria-hidden="true"></i> Pause Game <i class="fa fa-gamepad" aria-hidden="true"></i></button>
+        <br/><br/>
+        <button id="mute"><i class="fa fa-volume-off" aria-hidden="true"></i> Mute / Unmute <i class="fa fa-volume-up" aria-hidden="true"></i></button>
+        <br/><br/>
+        <button id="nextSong"><i class="fa fa-music" aria-hidden="true"></i> Next Song <i class="fa fa-fast-forward" aria-hidden="true"></i></button>
+      </div>
+      <div class="social-media">
+        <a href="http://www.linkedin.com/in/randyjap" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i> linkedin.com/in/randyjap</a>
+        <br/><br/>
+        <a href="http://www.github.com/randyjap" target="_blank"><i class="fa fa-github-square" aria-hidden="true"></i> github.com/randyjap</a>
+        <br/><br/>
+        <a href="http://www.randyjap.com" target="_blank"><i class="fa fa-id-card" aria-hidden="true"></i> randyjap.com</a>
+      </div>
     </div>
   </body>
 </html>
