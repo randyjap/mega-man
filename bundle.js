@@ -119,6 +119,7 @@
 	  })[0];
 	
 	  this.gameStatus = null;
+	  this.score = 0;
 	}
 	
 	var characters = {
@@ -176,6 +177,8 @@
 	    this.megaman.hit = true;
 	  } else if (type === "friendly-bullet" && sprite && sprite.type === "boss" && this.gameStatus === null) {
 	    sprite.hitPoints--;
+	    this.score += Math.round(100000 * Math.random());
+	    document.getElementById("score").innerHTML = 'Score: ' + this.score;
 	    sprite.hit = true;
 	    if (sprite.hitPoints <= 0) {
 	      this.gameStatus = "won";
@@ -268,15 +271,15 @@
 	  context.translate(-around, 0);
 	}
 	
-	function Canvas(parent, level) {
+	function Canvas(parent, game) {
 	  this.canvas = document.createElement("canvas");
 	  this.canvas.id = "canvas";
-	  this.canvas.width = Math.min(window.innerWidth, level.width * spriteSize);
-	  this.canvas.height = Math.min(window.innerWidth / 3, level.height * spriteSize);
+	  this.canvas.width = Math.min(window.innerWidth, game.width * spriteSize);
+	  this.canvas.height = Math.min(window.innerWidth / 3, game.height * spriteSize);
 	  parent.appendChild(this.canvas);
 	  this.cx = this.canvas.getContext("2d");
 	
-	  this.level = level;
+	  this.game = game;
 	  this.animationTime = 0;
 	  this.facingRight = false;
 	
@@ -307,27 +310,27 @@
 	Canvas.prototype.updateViewport = function () {
 	  var view = this.viewport,
 	      margin = view.width / 6;
-	  var megaman = this.level.megaman;
+	  var megaman = this.game.megaman;
 	  var center = megaman.pos.plus(megaman.size.times(0.5));
 	
 	  if (center.x < view.left + margin * 2) {
 	    view.left = Math.max(center.x - margin * 2, 0);
 	  } else if (center.x > view.left + view.width - margin * 2) {
-	    view.left = Math.min(center.x + margin * 2 - view.width, this.level.width - view.width);
+	    view.left = Math.min(center.x + margin * 2 - view.width, this.game.width - view.width);
 	  }
 	
 	  if (center.y < view.top + margin) {
 	    view.top = Math.max(center.y - margin, 0);
 	  } else if (center.y > view.top + view.height - margin) {
-	    view.top = Math.min(center.y + margin - view.height, this.level.height - view.height);
+	    view.top = Math.min(center.y + margin - view.height, this.game.height - view.height);
 	  }
 	};
 	
 	Canvas.prototype.clearDisplay = function () {
-	  if (this.level.gameStatus === "won") {
+	  if (this.game.gameStatus === "won") {
 	    //TODO
 	    console.log("YOU WON!");
-	  } else if (this.level.gameStatus === "lost") {
+	  } else if (this.game.gameStatus === "lost") {
 	    //TODO
 	    console.log("YOU LOST!");
 	  } else {
@@ -346,7 +349,7 @@
 	
 	  for (var y = top; y < bottom; y++) {
 	    for (var x = left; x < right; x++) {
-	      var fieldType = this.level.grid[y][x];
+	      var fieldType = this.game.grid[y][x];
 	      if (fieldType === null) continue;
 	      var xPosition = (x - view.left) * spriteSize;
 	      var yPosition = (y - view.top) * spriteSize;
@@ -363,10 +366,10 @@
 	  farewellMessage.src = "images/win-loss.png";
 	  var messageNumber = void 0;
 	
-	  if (this.level.gameStatus === "lost") {
+	  if (this.game.gameStatus === "lost") {
 	    messageNumber = 1;
 	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
-	  } else if (this.level.gameStatus === "won") {
+	  } else if (this.game.gameStatus === "won") {
 	    messageNumber = 0;
 	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
 	  } else if (new Date() - this.start < 7000) {
@@ -377,7 +380,11 @@
 	
 	Canvas.prototype.drawMegaMan = function (x, y, width, height) {
 	  var spriteFrameNumber = 0;
-	  var megaman = this.level.megaman;
+	  var megaman = this.game.megaman;
+	
+	  if (megaman.hitPoints > 0 && megaman.hitPoints < 50) megaman.hitPoints += 0.02;
+	
+	  document.getElementById("megaman-health").innerHTML = "Megaman Health: " + Math.round(megaman.hitPoints);
 	
 	  if (megaman.speed.x !== 0) this.facingRight = megaman.speed.x < 0;
 	
@@ -402,19 +409,22 @@
 	
 	Canvas.prototype.drawBoss = function (x, y, width, height) {
 	  var spriteFrameNumber = 13;
-	  var boss = this.level.boss;
+	  var boss = this.game.boss;
 	  if (boss.destroyed) {
 	    spriteFrameNumber = [17, 18][Math.floor(Math.random() * [17, 18].length)];
 	  } else if (boss.hit) {
 	    spriteFrameNumber = [17, 18][Math.floor(Math.random() * [17, 18].length)];
 	  }
 	
+	  if (!boss.destroyed && boss.hitPoints < 100) boss.hitPoints += 0.02;
+	  document.getElementById("boss-health").innerHTML = "Boss Health: " + Math.round(boss.hitPoints);
+	
 	  var rectangle = new Path2D();
 	  rectangle.rect(x, y - 20, 50 * boss.hitPoints / 50, 20);
 	  this.cx.stroke(rectangle);
 	
 	  this.cx.save(); //keep drawing context intact
-	  if (this.level.megaman.pos.x > this.level.boss.pos.x) flipHorizontally(this.cx, x + width / 2);
+	  if (this.game.megaman.pos.x > this.game.boss.pos.x) flipHorizontally(this.cx, x + width / 2);
 	
 	  this.cx.drawImage(spriteRoll, spriteFrameNumber * width, 0, width, height, x, y, width, height);
 	
@@ -427,7 +437,7 @@
 	};
 	
 	Canvas.prototype.drawSprites = function () {
-	  this.level.sprites.forEach(function (sprite) {
+	  this.game.sprites.forEach(function (sprite) {
 	    var width = sprite.size.x * spriteSize;
 	    var height = sprite.size.y * spriteSize;
 	    var x = (sprite.pos.x - this.viewport.left) * spriteSize;

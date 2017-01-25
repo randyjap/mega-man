@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <script type="text/javascript" src="bundle.js"></script>
     <style>
       div.fixed {
@@ -12,9 +13,29 @@
       button {
         position: relative;
       }
+      #status-bar-left {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+      #status-bar-right {
+        position: absolute;
+        top: 20px;
+        left: 400px;
+      }
+      .indicators {
+        font-family: 'Press Start 2P', cursive;
+      }
     </style>
   </head>
   <body>
+    <div id="status-bar-left">
+      <div id="megaman-health" class="indicators">Megaman Health: 50</div>
+      <div id="boss-health" class="indicators">Boss Health: 100</div>
+    </div>
+    <div id="status-bar-right">
+      <div id="score" class="indicators">Score: 0</div>
+    </div>
     <div class="fixed">
       <button id="restart">Restart</button>
       <button id="pause">Pause</button>
