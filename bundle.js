@@ -360,7 +360,7 @@
 	  // this will slow down the firing rate to 3 a second
 	  if (!this.destroyed) {
 	    var cFire = new Date();
-	    if ((cFire - this.lastFire) / 1000 > bossFiringRate && this.pos.x - game.megaman.pos.x < 7) {
+	    if ((cFire - this.lastFire) / 1000 > bossFiringRate && this.pos.x - game.megaman.pos.x < 17) {
 	      var fireRight = true;
 	      if (this.pos.x > game.megaman.pos.x) fireRight = false;
 	      game.sprites.push(new Bullet(new _vector_util.VectorUtil(this.pos.x, this.pos.y), "unfriendly-bullet", fireRight));
