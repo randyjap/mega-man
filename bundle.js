@@ -56,6 +56,10 @@
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  window.pause = false;
+	  var music_counter = 0;
+	  var muteStatus = false;
+	  _sound.music[music_counter].play();
+	
 	  var runGame = (0, _game.play)(_levels.levels, _canvas.Canvas, _sound.soundSprites, _sound.music);
 	  runGame();
 	  var restartButton = document.getElementById("restart");
@@ -80,10 +84,6 @@
 	    window.pause = !window.pause;
 	    if (!window.pause) runGame();
 	  });
-	
-	  var music_counter = 0;
-	  var muteStatus = false;
-	  _sound.music[music_counter].play();
 	
 	  var muteButton = document.getElementById("mute");
 	  muteButton.addEventListener("click", function (e) {
@@ -360,7 +360,7 @@
 	  // this will slow down the firing rate to 3 a second
 	  if (!this.destroyed) {
 	    var cFire = new Date();
-	    if ((cFire - this.lastFire) / 1000 > bossFiringRate) {
+	    if ((cFire - this.lastFire) / 1000 > bossFiringRate && this.pos.x - game.megaman.pos.x < 7) {
 	      var fireRight = true;
 	      if (this.pos.x > game.megaman.pos.x) fireRight = false;
 	      game.sprites.push(new Bullet(new _vector_util.VectorUtil(this.pos.x, this.pos.y), "unfriendly-bullet", fireRight));
@@ -412,7 +412,7 @@
 	  // this will slow down the firing rate to 3 a second
 	  if (!this.destroyed) {
 	    var cFire = new Date();
-	    if ((cFire - this.lastFire) / 1000 > bossFiringRate) {
+	    if ((cFire - this.lastFire) / 1000 > bossFiringRate && this.pos.x - game.megaman.pos.x < 23) {
 	      var fireRight = true;
 	      if (this.pos.x > game.megaman.pos.x) fireRight = false;
 	      game.sprites.push(new Bullet(new _vector_util.VectorUtil(this.pos.x, this.pos.y), "unfriendly-bullet", fireRight));
@@ -534,7 +534,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                           B    ", "                                                     H     #####################", "                                                   #####                        ", "                                       H    ####                                ", "                                 H   ####                                       ", "                         H    #####          ####      ####     ####   ####     ", "                   H   ####           ####                                      ", "     M           ####                             ####                          ", "WW############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "                                                                                "]];
+	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                           B    ", "                                                     H     #####################", "                                                   #####                        ", "                                       H    ####                                ", "                                 H   ####                                       ", "                         H    #####                     ####     ####   ####    ", "                   H   ####                 ####   ##                           ", "     M           ####               ####                                        ", "WW############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "                                                                                "]];
 
 /***/ },
 /* 5 */

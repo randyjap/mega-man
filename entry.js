@@ -5,6 +5,10 @@ import { music, soundSprites } from './lib/sound.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   window.pause = false;
+  let music_counter = 0;
+  let muteStatus = false;
+  music[music_counter].play();
+
   let runGame = play(levels, Canvas, soundSprites, music);
   runGame();
   let restartButton = document.getElementById("restart");
@@ -29,10 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.pause = !window.pause;
     if (!window.pause) runGame();
   });
-
-  let music_counter = 0;
-  let muteStatus = false;
-  music[music_counter].play();
 
   let muteButton = document.getElementById("mute");
   muteButton.addEventListener("click", e => {
