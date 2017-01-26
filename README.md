@@ -21,8 +21,9 @@ The project implementation should allow the user to:
 
 This project will also include:
 
-- an **ABOUT** modal describing the game and its rules
 - a production **README**
+- a pictographic control description
+- my own social media links
 
 ### Wireframes
 
@@ -32,11 +33,13 @@ Game controls will include Start, Stop, Reset, and Mute control.
 
 ![wireframes](images/mockup.png)
 
-### Sprite Examples
+### Sprite Examples & Overlays
 
-![wireframes](images/mega-man.png)
+![wireframes](images/megaman.png)
 
-![wireframes](images/enemies.png)
+![wireframes](images/win-loss.png)
+
+![wireframes](images/controls.png)
 
 ### Architecture and Technologies
 
