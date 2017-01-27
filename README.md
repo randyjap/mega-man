@@ -126,6 +126,22 @@ Canvas.prototype.drawBullet = function(x, y, width, height) {
 };
 ```
 
+We iterate over all sprites and test against all other sprites.  If we find an overlap with a specific set of conditions, the sprite can "lose" hit points, the game can add score, and the static html file can be updated with the new score.
+
+Additionally, the hit condition to true allows the sprite to be rendered using a different sprite index number to indicate the hit.  The sound referenced in the game object can play the damage sound. 
+
+```javascript
+Game.prototype.spriteOverlapAction = function(type, player, sprite) {
+...
+  sprite.hitPoints--;
+  this.score += Math.round(100000 * Math.random());
+  document.getElementById("score").innerHTML = `Score: ${this.score}`;
+  sprite.hit = true;
+  this.sound.play("enemyDamage");
+...
+}
+```
+
 ### Wireframes
 
 This app will consist of a single screen with game viewport, game controls, and links to Github, Linkedin, and my portfolio site.  
