@@ -43,7 +43,7 @@ music_counter = (music_counter + 1) % 3;
 music[music_counter].play();
 ```
 
-Time stamping the last time a bullet was fired using "cFire" and "lastFire", controls the rate at which they are shot.
+Time stamping the last time a bullet was fired using "cFire" and "lastFire" controls the rate at which they are shot.
 
 Tracking the sprite's x coordinate in relation to Mega Man's x coordinate allows the hostile sprite to shoot in the correct direction.
 
@@ -73,6 +73,57 @@ this.cx.drawImage(
   x, y, width, height
 );
 
+```
+
+Using the game status and timestamps, we can insert custom messages into the background.
+
+```javascript
+let farewellMessage = document.createElement("img");
+farewellMessage.src = "images/win-loss.png";
+let messageNumber;
+
+if (this.game.gameStatus === "lost") {
+  messageNumber = 1;
+  this.cx.drawImage(
+    farewellMessage,
+    (messageNumber * 400), 0,
+    400, 200,
+    400 + (right - left) / 2, 100 + (bottom - top) / 2,
+    400, 200
+  );
+} else if (this.game.gameStatus === "won") {
+  messageNumber = 0;
+  this.cx.drawImage(
+    farewellMessage,
+    (messageNumber * 400), 0,
+    400, 200,
+    400 + (right - left) / 2, 100 + (bottom - top) / 2,
+    400, 200
+  );
+} else if (new Date() - this.start < 7000) {
+  messageNumber = 2;
+  this.cx.drawImage(
+    farewellMessage,
+    (messageNumber * 400), 0,
+    400, 200,
+    400 + (right - left) / 2, 100 + (bottom - top) / 2,
+    400, 200
+  );
+}
+```
+
+Drawing sprites is achieved through its position, size, and sprite data.
+
+```javascript
+Canvas.prototype.drawBullet = function(x, y, width, height) {
+  let spriteFrameNumber = 12;
+  this.cx.drawImage(
+    spriteRoll,
+    (spriteFrameNumber * width), 0,
+    width, height,
+    x, y, width, height
+  );
+};
 ```
 
 ### Wireframes
