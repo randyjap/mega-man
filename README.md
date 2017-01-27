@@ -25,6 +25,56 @@ This project will also include:
 - a pictographic control description
 - my own social media links
 
+### Selected Code
+
+Putting different background music into an array allows for rotating through them.
+
+```javascript
+let musicChibi = new Howl({
+  src: 'sounds/music/chibi.mp3',
+  autoplay: false,
+  loop: true,
+  volume: 1,
+});
+...
+
+export const music = [musicChibi, musicDigital, musicResistors, victory];
+music_counter = (music_counter + 1) % 3;
+music[music_counter].play();
+```
+
+Time stamping the last time a bullet was fired using "cFire" and "lastFire", controls the rate at which they are shot.
+
+Tracking the sprite's x coordinate in relation to Mega Man's x coordinate allows the hostile sprite to shoot in the correct direction.
+
+```javascript
+let cFire = new Date();
+if (((cFire - this.lastFire) / 1000) > bossFiringRate && this.pos.x - game.megaman.pos.x < 23){
+  let fireRight = true;
+  if (this.pos.x > game.megaman.pos.x) fireRight = false;
+  game.sprites.push(new Bullet(
+    new VectorUtil(this.pos.x, this.pos.y), "unfriendly-bullet", fireRight
+  ));
+  this.lastFire = cFire;
+}
+```
+
+Assigning the width of a sprite on the "spriteRoll" allows easier cycling through the sprites.
+
+```javascript
+let spriteSize = 50;
+let spriteRoll = document.createElement("img");
+let spriteFrameNumber = 1;
+...
+this.cx.drawImage(
+  spriteRoll,
+  (spriteFrameNumber * width), 0,
+  width, height,
+  x, y, width, height
+);
+
+```
+
 ### Wireframes
 
 This app will consist of a single screen with game viewport, game controls, and links to Github, Linkedin, and my portfolio site.  

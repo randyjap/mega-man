@@ -126,6 +126,8 @@
 	  this.height = plan.length;
 	  this.sound = soundSprites;
 	  this.music = music;
+	  this.gameStatus = null;
+	  this.score = 0;
 	
 	  for (var y = 0; y < this.height; y++) {
 	    var row = plan[y],
@@ -147,9 +149,6 @@
 	  this.boss = this.sprites.filter(function (player) {
 	    return player.type === "boss";
 	  })[0];
-	
-	  this.gameStatus = null;
-	  this.score = 0;
 	}
 	
 	var characters = {
@@ -236,7 +235,7 @@
 	};
 	
 	function trackKeys(codes) {
-	  var pressed = Object.create(null);
+	  var pressed = {};
 	  function handler(event) {
 	    if (codes.hasOwnProperty(event.keyCode)) {
 	      var down = event.type === "keydown";
