@@ -117,7 +117,7 @@
 	
 	var _sprites = __webpack_require__(3);
 	
-	var arrowCodes = { 65: "left", 87: "up", 68: "right", 32: "shoot" };
+	var arrowCodes = { 65: "left", 87: "up", 68: "right", 32: "shoot", 38: "up", 37: "left", 39: "right" };
 	
 	function Game(plan, soundSprites, music) {
 	  this.grid = [];

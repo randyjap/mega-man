@@ -12,7 +12,7 @@ This project intends to showcase a basic set of features that defines this class
 
 ### Functionality & MVP  
 
-The project implementation should allow the user to:
+The project implementation will allow the user to:
 
 - to move the character in 2D (running side-to-side, jumping up and down)
 - start, pause, restart gameplay
@@ -128,7 +128,7 @@ Canvas.prototype.drawBullet = function(x, y, width, height) {
 
 We iterate over all sprites and test against all other sprites.  If we find an overlap with a specific set of conditions, the sprite can "lose" hit points, the game can add score, and the static html file can be updated with the new score.
 
-Additionally, setting the hit condition to true allows the sprite to be rendered using a different sprite index number to visualize the hit on the render.  The sound referenced in the game object can play the damage sound. 
+Additionally, setting the hit condition to true allows the sprite to be rendered using a different sprite index number to visualize the hit on the render.  The sound referenced in the game object can play the damage sound.
 
 ```javascript
 Game.prototype.spriteOverlapAction = function(type, player, sprite) {
