@@ -13,11 +13,12 @@
       div.fixed {
         position: absolute;
         bottom: 0;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -10%);
         left: 50%;
         display: flex;
         flex-flow: row;
         width: 80%;
+        justify-content: space-between;
       }
       button {
         width: 250px;
@@ -28,7 +29,7 @@
       #status-bar-left {
         position: absolute;
         top: 20px;
-        left: 20px;
+        left: 30px;
       }
       #status-bar-right {
         position: absolute;
@@ -54,6 +55,7 @@
       }
       a {
         color: black;
+        text-decoration: none;
       }
       #canvas {
         border: black solid;
@@ -61,6 +63,12 @@
         margin-left: auto;
         display: block;
         width: 99%;
+      }
+      .note {
+        font-size: 12px;
+      }
+      .fa-links {
+        font-size: 20px;
       }
     </style>
   </head>
@@ -85,13 +93,13 @@
         <button id="nextSong"><i class="fa fa-music" aria-hidden="true"></i> Next Song <i class="fa fa-fast-forward" aria-hidden="true"></i></button>
       </div>
       <div class="social-media">
-        <a href="http://www.linkedin.com/in/randyjap" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i> linkedin.com/in/randyjap</a>
+        <a href="http://www.linkedin.com/in/randyjap" target="_blank"><i class="fa fa-linkedin-square fa-links" aria-hidden="true"></i> linkedin.com/in/randyjap</a>
         <br/><br/>
-        <a href="http://www.github.com/randyjap/mega-man" target="_blank"><i class="fa fa-github-square" aria-hidden="true"></i> github.com/randyjap/mega-man</a>
+        <a href="http://www.github.com/randyjap/mega-man" target="_blank"><i class="fa fa-github-square fa-links" aria-hidden="true"></i> github.com/randyjap/mega-man</a>
         <br/><br/>
-        <a href="http://www.randyjap.com" target="_blank"><i class="fa fa-id-card" aria-hidden="true"></i> randyjap.com</a>
-        <br/><br/>
-        The music caches and plays once loaded.
+        <a href="http://www.randyjap.com" target="_blank"><i class="fa fa-id-card fa-links" aria-hidden="true"></i> randyjap.com</a>
+        <br/><br/><br/>
+        <div class="note">(The music caches and plays once loaded.)</div>
       </div>
     </div>
   </body>
