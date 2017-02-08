@@ -4,9 +4,9 @@
 <img src="/mega-man(2).gif">
 <img src="/mega-man(3).gif">
 
-## Mega Man
+## Mega Man [(play live)](http://www.randyjap.com/mega-man/)
 
-### Background [play live](http://www.randyjap.com/mega-man/)
+### Background
 
 **Mega Man** was released in 1987 on the NES (Nintendo Entertainment System).  The original video game remains an enduring and timeless classic, marking the start of a franchise that would to date sell over 30 million copies worldwide.  The Mega Man franchise has become one of the most well known video game franchises of all time and continues to owe much of its current game mechanics to the original.
 
