@@ -1,3 +1,7 @@
+<img src="https://github.com/randyjap/mega-man/mega-man(1).gif">
+<img src="https://github.com/randyjap/mega-man/mega-man(2).gif">
+<img src="https://github.com/randyjap/mega-man/mega-man(3).gif">
+
 ## Mega Man
 
 ### Background
