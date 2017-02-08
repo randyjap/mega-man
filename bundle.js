@@ -117,7 +117,7 @@
 	
 	var _sprites = __webpack_require__(3);
 	
-	var arrowCodes = { 65: "left", 87: "up", 68: "right", 32: "shoot" };
+	var arrowCodes = { 65: "left", 87: "up", 68: "right", 32: "shoot", 38: "up", 37: "left", 39: "right" };
 	
 	function Game(plan, soundSprites, music) {
 	  this.grid = [];
@@ -533,7 +533,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                           B    ", "                                                     H     #####################", "                                                   #####                        ", "                                       H    ####                                ", "                                 H   ####                                       ", "                         H    #####                     ####     ####   ####    ", "                   H   ####                 ####   ##                           ", "     M           ####               ####                                        ", "WW############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", "                                                                                "]];
+	var levels = exports.levels = [["                                                                                ", "                                                                                ", "                                                                                ", "                                                                                ", "                                                                               #", "                                                                       B        ", "                                                     H     ################     ", "                                           ####    #####                       # ", "                                       H                                        ", "                                 H   ####                                       ", "                       ####   #####              ##     ####     ####          #", "                   H                                                            ", "    M            ####                       ####              #          ####   ", "##############WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"]];
 
 /***/ },
 /* 5 */
@@ -644,13 +644,13 @@
 	
 	  if (this.game.gameStatus === "lost") {
 	    messageNumber = 1;
-	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 750 + (right - left) / 2, 150 + (bottom - top) / 2, 400, 200);
 	  } else if (this.game.gameStatus === "won") {
 	    messageNumber = 0;
-	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 750 + (right - left) / 2, 150 + (bottom - top) / 2, 400, 200);
 	  } else if (new Date() - this.start < 7000) {
 	    messageNumber = 2;
-	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 750 + (right - left) / 2, 150 + (bottom - top) / 2, 400, 200);
 	  }
 	};
 	
