@@ -644,13 +644,13 @@
 	
 	  if (this.game.gameStatus === "lost") {
 	    messageNumber = 1;
-	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 750 + (right - left) / 2, 150 + (bottom - top) / 2, 400, 200);
 	  } else if (this.game.gameStatus === "won") {
 	    messageNumber = 0;
-	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 750 + (right - left) / 2, 150 + (bottom - top) / 2, 400, 200);
 	  } else if (new Date() - this.start < 7000) {
 	    messageNumber = 2;
-	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 400 + (right - left) / 2, 100 + (bottom - top) / 2, 400, 200);
+	    this.cx.drawImage(farewellMessage, messageNumber * 400, 0, 400, 200, 750 + (right - left) / 2, 150 + (bottom - top) / 2, 400, 200);
 	  }
 	};
 	
